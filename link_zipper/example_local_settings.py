@@ -5,12 +5,12 @@ SECRET_KEY = "django-insecure-***"
 DEBUG = True
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'link_zipper_dj_db',
-        'USER': 'root',
-        'PASSWORD': 'mysql_root_password',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "link_zipper_dj_db",
+        "USER": "root",
+        "PASSWORD": "mysql_root_password",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
     }
 }

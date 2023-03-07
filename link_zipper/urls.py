@@ -19,17 +19,16 @@ from rest_framework import routers
 
 from links import views
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 
 
 router = routers.DefaultRouter()
-router.register(r'links', views.LinkViewSet)
-router.register(r's', views.RedirectViewSet)
+router.register(r"links", views.LinkViewSet)
+router.register(r"s", views.RedirectViewSet)
 
 urlpatterns += [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path("", include(router.urls)),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

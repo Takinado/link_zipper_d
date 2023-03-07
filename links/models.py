@@ -7,8 +7,8 @@ from link_zipper.settings import SITE
 
 
 class Link(TimeStampedModel):
-    session = models.CharField('Сессия', max_length=32)
-    url = models.CharField('Ссылка', max_length=1024)
+    session = models.CharField("Сессия", max_length=32)
+    url = models.CharField("Ссылка", max_length=1024)
     zipped_url = models.CharField("Сжатая ссылка", max_length=128)
     clicks = models.IntegerField("Количество кликов", default=0)
 

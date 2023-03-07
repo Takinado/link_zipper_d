@@ -11,7 +11,7 @@ class LinkSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Link
-        fields = ['session', 'url', 'full_zipped_url', 'clicks']
+        fields = ["session", "url", "full_zipped_url", "clicks"]
 
     def get_full_zipped_url(self, obj):
         return obj.full_zipped_url
@@ -23,5 +23,4 @@ class RedirectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ['url', 'zipped_url']
-
+        fields = ["url", "zipped_url"]

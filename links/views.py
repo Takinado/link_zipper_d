@@ -1,6 +1,5 @@
 from django.http import HttpResponseRedirect
-
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.response import Response
 
 from links.models import Link
@@ -11,7 +10,8 @@ class LinkViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Link.objects.all().order_by('-created')
+
+    queryset = Link.objects.all().order_by("-created")
     serializer_class = LinkSerializer
 
     def perform_create(self, serializer):
@@ -36,7 +36,7 @@ class RedirectViewSet(viewsets.GenericViewSet):
 
     serializer_class = RedirectSerializer
     queryset = Link.objects.all().filter()
-    lookup_field = 'zipped_url'
+    lookup_field = "zipped_url"
 
     def retrieve(self, request, zipped_url=None):
         """
@@ -45,4 +45,4 @@ class RedirectViewSet(viewsets.GenericViewSet):
         instance = self.get_object()
         instance.increment_clicks()
         serializer = self.get_serializer(instance)
-        return HttpResponseRedirect(serializer.data['url'])
+        return HttpResponseRedirect(serializer.data["url"])
