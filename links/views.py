@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -15,7 +17,10 @@ class LinkViewSet(viewsets.ModelViewSet):
     serializer_class = LinkSerializer
 
     def perform_create(self, serializer):
-        serializer.save(session=self.request.session.session_key)
+        if not self.request.session.session_key:
+            self.request.session.save()
+        session_id = self.request.session.session_key
+        serializer.save(session=session_id)
 
     def list(self, request, *args, **kwargs):
         session_key = request.session.session_key
@@ -44,5 +49,13 @@ class RedirectViewSet(viewsets.GenericViewSet):
         """
         instance = self.get_object()
         instance.increment_clicks()
-        serializer = self.get_serializer(instance)
-        return HttpResponseRedirect(serializer.data["url"])
+        cached_url = cache.get(zipped_url)
+
+        if cached_url:
+            print("from cache")
+            return HttpResponseRedirect(cached_url)
+        else:
+            print("from db")
+            cache.set(zipped_url, instance.url, settings.REDIS_AGE)
+            serializer = self.get_serializer(instance)
+            return HttpResponseRedirect(serializer.data["url"])

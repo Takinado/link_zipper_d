@@ -25,7 +25,7 @@ urlpatterns = [
 
 
 router = routers.DefaultRouter()
-router.register(r"links", views.LinkViewSet)
+router.register(r"", views.LinkViewSet)
 router.register(r"s", views.RedirectViewSet)
 
 urlpatterns += [
