@@ -152,7 +152,7 @@ REST_FRAMEWORK = {
 }
 
 SECRET_KEY = "django-insecure-***"
-DEBUG = False
+DEBUG = True
 
 DATABASES = {
     "default": {
