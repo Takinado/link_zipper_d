@@ -23,12 +23,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 
-
 router = routers.DefaultRouter()
 router.register(r"", views.LinkViewSet)
 router.register(r"s", views.RedirectViewSet)
 
 urlpatterns += [
     path("", include(router.urls)),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

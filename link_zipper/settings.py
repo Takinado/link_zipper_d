@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -73,15 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "link_zipper.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -122,7 +113,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Format string for displaying run time timestamps in the Django admin site. The default
 # just adds seconds to the standard Django format, which is useful for displaying the timestamps
 # for jobs that are scheduled to run on intervals of less than one minute.
@@ -139,11 +129,10 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 # etc. See: https://djangopackages.org/grids/g/workers-queues-tasks/ for popular options).
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
-
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://redis:6379",
         "OPTIONS": {
             "db": 1,
         },
@@ -156,12 +145,31 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 2,
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.AdminRenderer",
+    ],
 }
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 2 * 60
+DEBUG = False
 
-REDIS_AGE = 1 * 60
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "link_zipper_dj_db",
+        "USER": "root",
+        "PASSWORD": "mysql_root_password",
+        "HOST": "db",
+        "PORT": "3306",
+    }
+}
+
+SITE = "http://127.0.0.1:8000/s"
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 60 * 60
+
+REDIS_AGE = 5 * 60
 
 try:
     from .local_settings import *

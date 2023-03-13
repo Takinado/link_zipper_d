@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
 from links.models import Link
@@ -15,6 +16,8 @@ class LinkViewSet(viewsets.ModelViewSet):
 
     queryset = Link.objects.all().order_by("-created")
     serializer_class = LinkSerializer
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'api.html'
 
     def perform_create(self, serializer):
         if not self.request.session.session_key:
@@ -22,23 +25,19 @@ class LinkViewSet(viewsets.ModelViewSet):
         session_id = self.request.session.session_key
         serializer.save(session=session_id)
 
-    def list(self, request, *args, **kwargs):
-        session_key = request.session.session_key
-        queryset = self.filter_queryset(self.get_queryset()).filter(session=session_key)
+    def get_queryset(self):
+        """
+        Переопределение queryset для действия list.
+        """
+        queryset = self.queryset
+        if self.action == "list":
+            session_key = self.request.session.session_key
+            queryset = queryset.filter(session=session_key)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        response = Response(serializer.data)
-
-        return response
+        return queryset
 
 
 class RedirectViewSet(viewsets.GenericViewSet):
-
     serializer_class = RedirectSerializer
     queryset = Link.objects.all().filter()
     lookup_field = "zipped_url"
