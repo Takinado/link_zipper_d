@@ -1,20 +1,7 @@
 ## Запуск
 1. Склонировать проект
-2. Переименовать `example_local_settings.py` в `local_settings.py`
-3. Запустить зависимые сервисы `docker-compose up`
-4. Создать базу:
-   * Войти в adminer `http://127.0.0.1:8080`
-     * Имя пользователя: `root`
-     * Пароль: `mysql_root_password`
-     * База данных: `link_zipper_dj_db`
-   * Выполнить запрос
-     ```mysql
-     CREATE DATABASE link_zipper_dj_db CHARACTER SET utf8 COLLATE utf8_bin;
-     ```
-5. Запустить миграции `python manage.py migrate`
-6. Запустить основной сервис `python manage.py runserver`
-7. Запустить планировщик `python manage.py runapscheduler`
-8. Сайт на адресе `http://127.0.0.1:8000`
+2. Запустить проект `docker-compose up`
+3. Сайт на адресе `http://127.0.0.1:8000`
 
 ## Задание
 Требуется реализовать web-приложение - аналог bit.ly и подобных систем.
@@ -56,7 +43,7 @@
 
 
 ## TODO:
+* Хранение секретов
 * Тесты
-* Полная докеризация
 * Типы
 * Линтеры, чеккеры
