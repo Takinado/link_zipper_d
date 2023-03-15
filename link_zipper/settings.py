@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv())
 
 # Application definition
 
@@ -151,17 +152,18 @@ REST_FRAMEWORK = {
     ],
 }
 
-SECRET_KEY = "django-insecure-***"
-DEBUG = True
+
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "link_zipper_dj_db",
-        "USER": "root",
-        "PASSWORD": "mysql_root_password",
-        "HOST": "db",
-        "PORT": "3306",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config("MYSQL_DB"),
+        'USER': config("MYSQL_USER"),
+        'PASSWORD': config("MYSQL_PASSWORD"),
+        'HOST': config('MYSQL_HOST', default='localhost'),
+        'PORT': config("MYSQL_PORT", default=3306, cast=int),
     }
 }
 
@@ -172,7 +174,3 @@ SESSION_COOKIE_AGE = 60 * 60
 
 REDIS_AGE = 5 * 60
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
