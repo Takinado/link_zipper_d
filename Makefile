@@ -4,19 +4,19 @@
 no_targets:
 	echo "command expected"
 
-produp:
-	docker-compose -f docker-compose.yml up --build
+prod_up:
+	LOCAL_USER_ID=$$(id -u) LOCAL_GROUP_ID=$$(id -g) docker-compose up --build
 
-proddown:
-	docker-compose -f docker-compose.yml down -v
+prod_down:
+	LOCAL_USER_ID=$$(id -u) LOCAL_GROUP_ID=$$(id -g) docker-compose down -v
 
-up:
-	docker-compose -f docker-compose-dev.yml up --build
+dev_up:
+	LOCAL_USER_ID=$$(id -u) LOCAL_GROUP_ID=$$(id -g) docker-compose -f docker-compose-dev.yml up --build
 
-down:
-	docker-compose -f docker-compose-dev.yml down -v
+dev_down:
+	LOCAL_USER_ID=$$(id -u) LOCAL_GROUP_ID=$$(id -g) docker-compose -f docker-compose-dev.yml down -v
 
-run:
+dev_run:
 	python manage.py makemigrations --no-input
 	python manage.py migrate --no-input
 	python manage.py runserver 0.0.0.0:8000

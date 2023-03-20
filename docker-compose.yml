@@ -1,5 +1,5 @@
 # Use root/example as user/password credentials
-version: '3.8'
+version: "3.8"
 
 services:
   web:
@@ -7,7 +7,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/usr/src/app
+      - ./:/app
     depends_on:
       - db
       - redis
@@ -21,13 +21,14 @@ services:
   db:
     image: mysql:8.0.32-debian
     restart: unless-stopped
-#    tty: true
     env_file:
       - .env
     volumes:
-#      - ./docker/mysql/data:/var/lib/mysql
-      - mysql_data:/var/lib/mysql
-      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/logs:/var/log/mysql
+#    command: mysqld --general-log=1 --general-log-file=/var/lib/mysql/general-log.log
+    command: mysqld --general-log=1 --general-log-file=/var/log/mysql/general-log.log
+    user: ${LOCAL_USER_ID:-1000}:${LOCAL_GROUP_ID:-1000}
     networks:
       - my_net
 
@@ -39,7 +40,7 @@ services:
     networks:
       - my_net
     ports:
-      - '8080:8080'
+      - "8080:8080"
 
   redis:
     image: redis:7.0.9
@@ -50,6 +51,3 @@ services:
 networks:
   my_net:
     driver: bridge
-
-volumes:
-  mysql_data:
